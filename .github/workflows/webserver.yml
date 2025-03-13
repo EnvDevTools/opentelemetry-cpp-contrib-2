@@ -106,26 +106,26 @@ jobs:
         run: |
           rm -rf /tmp/buildx-cache/apache_ubuntu_arm64
           mv /tmp/buildx-cache/apache_ubuntu_arm64-new /tmp/buildx-cache/apache_ubuntu_arm64
-      # - name: copy artifacts
-      #   id: artifacts
-      #   run: |
-      #     cd instrumentation/otel-webserver-module
-      #     mkdir -p /tmp/apache_ubuntu_arm64/
-      #     docker cp apache_ubuntu_container_arm64:/otel-webserver-module/build/opentelemetry-webserver-sdk-arm64-linux.tgz \
-      #       /tmp/apache_ubuntu_arm64/
-      # - name: upload artifacts
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: opentelemetry-webserver-sdk-arm64-linux.tgz
-      #     path: /tmp/apache_ubuntu_arm64/opentelemetry-webserver-sdk-arm64-linux.tgz
-      # - name: run integrationtest
-      #   run: |
-      #     docker rm -f apache_ubuntu_container_arm64
-      #     cd instrumentation/otel-webserver-module
-      #     docker compose --profile ubuntu20.04 up -d
-      #     docker ps -a
-      #     sleep 30
-      #     ./gradlew :test:integration:integrationTests -i
+      - name: copy artifacts
+        id: artifacts
+        run: |
+          cd instrumentation/otel-webserver-module
+          mkdir -p /tmp/apache_ubuntu_arm64/
+          docker cp apache_ubuntu_container_arm64:/otel-webserver-module/build/opentelemetry-webserver-sdk-arm64-linux.tgz \
+            /tmp/apache_ubuntu_arm64/
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: opentelemetry-webserver-sdk-arm64-linux.tgz
+          path: /tmp/apache_ubuntu_arm64/opentelemetry-webserver-sdk-arm64-linux.tgz
+      - name: run integrationtest
+        run: |
+          docker rm -f apache_ubuntu_container_arm64
+          cd instrumentation/otel-webserver-module
+          docker compose --profile ubuntu20.04 up -d
+          docker ps -a
+          sleep 30
+          ./gradlew :test:integration:integrationTests -i
 
   webserver-build-test-centos7:
     name: webserver-centos7-build
